@@ -1,6 +1,6 @@
 {
   "name": "GabeKarya Marketplace & Admin Suite",
-  "description": "Webstore marketplace produk artisanal GabeKarya dengan 18 produk kurasi, manajemen stok real-time, verifikasi bukti pembayaran, notifikasi otomatis WhatsApp, dasbor analitik sales, ekspor PDF/Excel, dan keamanan 2FA.",
+  "description": "Webstore marketplace produk artisanal GabeKarya dengan 24 produk kurasi, manajemen stok real-time, verifikasi bukti pembayaran, notifikasi otomatis WhatsApp, dasbor analitik sales, ekspor PDF/Excel, dan keamanan 2FA.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

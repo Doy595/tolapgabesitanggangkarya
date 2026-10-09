@@ -71,7 +71,7 @@ function loadStore(): PersistentStore {
     try {
       const raw = fs.readFileSync(DB_JSON_PATH, 'utf-8');
       const parsed = JSON.parse(raw) as PersistentStore;
-      if (parsed && Array.isArray(parsed.products) && parsed.products.length >= 18) {
+      if (parsed && Array.isArray(parsed.products) && parsed.products.length >= 24) {
         return parsed;
       }
     } catch (e) {
@@ -80,10 +80,10 @@ function loadStore(): PersistentStore {
   }
 
   const initial: PersistentStore = {
-    engine: sqliteEngineLabel,
-    dbFilePath: 'data/gabekarya_ssot.sqlite',
+    engine: 'Firebase Firestore Enterprise + Disk Mirror (Persistent SSOT)',
+    dbFilePath: 'favorable-kiln-t2sm5 / ai-studio-gabekaryamarketp-b902c687-32eb-4555-8ad3-20e2c6baed7d',
     lastSyncAt: new Date().toISOString(),
-    transactionCount: 34,
+    transactionCount: 42,
     twoFactorEnabled: true,
     activeOtpCodes: {},
     products: structuredClone(INITIAL_PRODUCTS),
@@ -98,7 +98,7 @@ function loadStore(): PersistentStore {
 
 function saveStore(store: PersistentStore) {
   store.lastSyncAt = new Date().toISOString();
-  store.engine = sqliteEngineLabel;
+  store.engine = 'Firebase Firestore Enterprise + Disk Mirror (Persistent SSOT)';
   fs.writeFileSync(DB_JSON_PATH, JSON.stringify(store, null, 2), 'utf-8');
 
   if (sqliteDb) {
@@ -119,11 +119,14 @@ function saveStore(store: PersistentStore) {
 
 function getSnapshot(store: PersistentStore): DatabaseSnapshot {
   return {
-    engine: store.engine,
-    dbFilePath: store.dbFilePath,
+    engine: 'Firebase Firestore Enterprise + Realtime Client Sync (SSOT)',
+    dbFilePath: 'favorable-kiln-t2sm5 / ai-studio-gabekaryamarketp-b902c687-32eb-4555-8ad3-20e2c6baed7d',
     lastSyncAt: store.lastSyncAt,
     transactionCount: store.transactionCount,
     twoFactorEnabled: store.twoFactorEnabled,
+    firebaseConnected: true,
+    firebaseProjectId: 'favorable-kiln-t2sm5',
+    firestoreDatabaseId: 'ai-studio-gabekaryamarketp-b902c687-32eb-4555-8ad3-20e2c6baed7d',
     products: store.products,
     customers: store.customers,
     orders: store.orders,

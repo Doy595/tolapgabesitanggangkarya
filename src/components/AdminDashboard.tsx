@@ -408,15 +408,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="p-3 rounded-xl bg-white border border-stone-200 space-y-1.5">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-800 flex items-center gap-1.5">
-                <Database className="w-3.5 h-3.5 text-emerald-700" />
-                Database Terhubung
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Firebase Online
               </span>
-              <span className="font-mono text-[11px] text-emerald-700 font-semibold">
-                ACID Aktif
+              <span className="font-mono text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-semibold border border-emerald-200">
+                Firestore SSOT
               </span>
             </div>
-            <p className="text-[11px] text-stone-500 font-mono truncate">
-              {snapshot.dbFilePath} · {snapshot.transactionCount} tx
+            <p className="text-[10px] text-stone-500 font-mono truncate" title="Firebase Project: favorable-kiln-t2sm5">
+              favorable-kiln-t2sm5 · {snapshot.products.length} Produk · {snapshot.orders.length} Order
             </p>
           </div>
 

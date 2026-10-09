@@ -1,0 +1,135 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Artisanal product catalog item in GabeKarya marketplace",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique product ID" },
+        "sku": { "type": "string", "description": "Stock keeping unit" },
+        "name": { "type": "string", "description": "Product display name" },
+        "category": { "type": "string", "description": "Category identifier" },
+        "categoryLabel": { "type": "string", "description": "Human readable category" },
+        "price": { "type": "number", "description": "Selling price in IDR" },
+        "costPrice": { "type": "number", "description": "Cost price in IDR" },
+        "stock": { "type": "number", "description": "Available inventory" },
+        "minStock": { "type": "number", "description": "Minimum threshold" },
+        "unit": { "type": "string", "description": "Packaging unit" },
+        "weightGram": { "type": "number", "description": "Weight in grams" },
+        "origin": { "type": "string", "description": "Origin location" },
+        "craftNotes": { "type": "string", "description": "Key artisan tasting/craft notes" },
+        "description": { "type": "string", "description": "Full product description" },
+        "imageUrl": { "type": "string", "description": "Image URL or asset path" },
+        "imagePosition": { "type": "string", "description": "CSS object-position coordinates" },
+        "featured": { "type": "boolean", "description": "Whether featured on homepage" },
+        "soldCount": { "type": "number", "description": "Total units sold" },
+        "rating": { "type": "number", "description": "Customer satisfaction score" },
+        "updatedAt": { "type": "string", "description": "Last update ISO timestamp" }
+      },
+      "required": ["id", "sku", "name", "category", "price", "stock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase transaction record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique order ID (e.g. GK-202610-001)" },
+        "customerId": { "type": "string", "description": "Customer reference ID" },
+        "customerName": { "type": "string", "description": "Customer recipient name" },
+        "customerEmail": { "type": "string", "description": "Customer email address" },
+        "customerWhatsapp": { "type": "string", "description": "Customer WhatsApp phone number" },
+        "shippingAddress": { "type": "string", "description": "Delivery street address" },
+        "city": { "type": "string", "description": "Destination city" },
+        "postalCode": { "type": "string", "description": "Postal code" },
+        "shippingCourier": { "type": "string", "description": "Courier service" },
+        "shippingTrackingNumber": { "type": "string", "description": "Airway bill tracking number" },
+        "subtotal": { "type": "number", "description": "Items subtotal in IDR" },
+        "shippingCost": { "type": "number", "description": "Shipping fee in IDR" },
+        "discount": { "type": "number", "description": "Discount in IDR" },
+        "totalAmount": { "type": "number", "description": "Grand total in IDR" },
+        "paymentMethod": { "type": "string", "description": "Payment gateway/method" },
+        "status": { "type": "string", "description": "Order lifecycle status" },
+        "paymentStatus": { "type": "string", "description": "Payment verification state" },
+        "whatsappNotified": { "type": "boolean", "description": "Whether WhatsApp approval notification was sent" },
+        "createdAt": { "type": "string", "description": "Creation ISO timestamp" },
+        "updatedAt": { "type": "string", "description": "Update ISO timestamp" }
+      },
+      "required": ["id", "customerName", "customerWhatsapp", "totalAmount", "status", "paymentStatus"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Registered or guest customer profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Customer ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "whatsapp": { "type": "string", "description": "WhatsApp number" },
+        "address": { "type": "string", "description": "Street address" },
+        "city": { "type": "string", "description": "City" },
+        "postalCode": { "type": "string", "description": "Postal code" },
+        "tier": { "type": "string", "description": "Loyalty tier" },
+        "totalOrders": { "type": "number", "description": "Total order count" },
+        "totalSpent": { "type": "number", "description": "Total spent in IDR" },
+        "joinedAt": { "type": "string", "description": "Registration ISO timestamp" },
+        "lastOrderAt": { "type": "string", "description": "Last order ISO timestamp" }
+      },
+      "required": ["id", "name", "whatsapp"]
+    },
+    "WhatsAppNotification": {
+      "title": "WhatsAppNotification",
+      "description": "Dispatched WhatsApp message transaction log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique notification ID" },
+        "orderId": { "type": "string", "description": "Associated order ID" },
+        "recipientPhone": { "type": "string", "description": "Recipient WhatsApp phone number" },
+        "recipientName": { "type": "string", "description": "Recipient name" },
+        "type": { "type": "string", "description": "Notification message type" },
+        "message": { "type": "string", "description": "Full message text" },
+        "status": { "type": "string", "description": "Dispatch delivery status" },
+        "sentAt": { "type": "string", "description": "Dispatch ISO timestamp" },
+        "deliveredAt": { "type": "string", "description": "Delivery ISO timestamp" }
+      },
+      "required": ["id", "orderId", "recipientPhone", "message", "status", "sentAt"]
+    },
+    "Security2FALog": {
+      "title": "Security2FALog",
+      "description": "Two-factor authentication audit log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Log ID" },
+        "timestamp": { "type": "string", "description": "Event ISO timestamp" },
+        "action": { "type": "string", "description": "Security action performed" },
+        "username": { "type": "string", "description": "Username or account identity" },
+        "ipAddress": { "type": "string", "description": "Originating IP" },
+        "device": { "type": "string", "description": "User agent / device summary" },
+        "success": { "type": "boolean", "description": "Whether authentication passed" },
+        "details": { "type": "string", "description": "Additional audit details" }
+      },
+      "required": ["id", "timestamp", "action", "username", "success"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Curated artisanal products collection in GabeKarya catalog"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Store orders with payment proof, items, and status progression"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Customer profiles and order spending analytics"
+    },
+    "/whatsapp_notifications/{notificationId}": {
+      "schema": "WhatsAppNotification",
+      "description": "Automatic WhatsApp dispatch logs and proof of notification"
+    },
+    "/security_logs/{logId}": {
+      "schema": "Security2FALog",
+      "description": "Two-Factor Authentication login and verification logs"
+    }
+  }
+}

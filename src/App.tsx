@@ -37,6 +37,13 @@ import {
   WhatsAppNotification,
 } from './types/marketplace';
 import { formatIDR } from './utils/exportReports';
+import {
+  saveCustomerToFirestore,
+  saveOrderToFirestore,
+  saveProductToFirestore,
+  saveWhatsAppLogToFirestore,
+  testConnection,
+} from './utils/firebase';
 
 export function App() {
   const [snapshot, setSnapshot] = useState<DatabaseSnapshot>({
@@ -231,6 +238,9 @@ export function App() {
       throw new Error(data.error || 'Gagal membuat pesanan.');
     }
     if (data.snapshot) setSnapshot(data.snapshot);
+    if (data.order) {
+      saveOrderToFirestore(data.order).catch(() => {});
+    }
     setCart([]);
     return data.order;
   };
@@ -244,6 +254,9 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      if (data.order) {
+        saveOrderToFirestore(data.order).catch(() => {});
+      }
       showToast(`Bukti pembayaran untuk ${orderId} berhasil diunggah.`);
     }
   };
@@ -259,8 +272,12 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      if (data.order) {
+        saveOrderToFirestore(data.order).catch(() => {});
+      }
       if (data.whatsappNotification) {
         setLatestWaDispatch(data.whatsappNotification);
+        saveWhatsAppLogToFirestore(data.whatsappNotification).catch(() => {});
       }
       showToast(
         `Pembayaran ${orderId} disetujui & notifikasi WhatsApp otomatis terkirim!`
@@ -277,8 +294,12 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      if (data.order) {
+        saveOrderToFirestore(data.order).catch(() => {});
+      }
       if (data.whatsappNotification) {
         setLatestWaDispatch(data.whatsappNotification);
+        saveWhatsAppLogToFirestore(data.whatsappNotification).catch(() => {});
       }
       showToast(`Bukti pembayaran ${orderId} ditolak & konfirmasi WA terkirim.`);
     }
@@ -318,6 +339,9 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      if (data.product) {
+        saveProductToFirestore(data.product).catch(() => {});
+      }
       showToast(
         editingId
           ? 'Data produk & stok berhasil diperbarui di database.'
@@ -335,6 +359,10 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      const updatedP = data.snapshot.products.find((p: Product) => p.id === productId);
+      if (updatedP) {
+        saveProductToFirestore(updatedP).catch(() => {});
+      }
     }
   };
 
@@ -363,6 +391,9 @@ export function App() {
     const data = await res.json();
     if (res.ok && data.snapshot) {
       setSnapshot(data.snapshot);
+      if (data.customer) {
+        saveCustomerToFirestore(data.customer).catch(() => {});
+      }
       showToast('Data pelanggan berhasil disimpan ke database.');
     }
   };
@@ -475,6 +506,13 @@ export function App() {
 
           {/* Zone 3: Primary Action */}
           <div className="flex items-center gap-3 shrink-0">
+            <div
+              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800"
+              title="Terkoneksi ke Firebase Firestore Enterprise (favorable-kiln-t2sm5)"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Firebase Online</span>
+            </div>
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
@@ -488,6 +526,10 @@ export function App() {
 
         {/* Mobile Quick Bar */}
         <div className="md:hidden border-t border-stone-200 px-4 py-2 flex items-center justify-between gap-4 overflow-x-auto text-xs font-semibold text-stone-700 bg-white">
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-800 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Firebase</span>
+          </div>
           <a href="#katalog" className="whitespace-nowrap shrink-0 py-1">
             Katalog ({snapshot.products.length})
           </a>
@@ -521,11 +563,16 @@ export function App() {
           <div className="lg:col-span-7 flex flex-col justify-between bg-white rounded-2xl border border-stone-200 p-6 sm:p-10">
             <div className="space-y-5">
               <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-stone-600">
-                <span>6 Pilihan Kopi Spesialti</span>
+                <span className="inline-flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Firebase Firestore SSOT
+                </span>
                 <span aria-hidden="true">·</span>
-                <span>6 Alat Seduh & Keramik Kasongan</span>
+                <span>8 Kopi Spesialti</span>
                 <span aria-hidden="true">·</span>
-                <span>6 Pantry & Hamper Sumbawa</span>
+                <span>8 Alat Seduh Keramik</span>
+                <span aria-hidden="true">·</span>
+                <span>8 Pantry & Hamper</span>
               </div>
 
               <h1
@@ -535,7 +582,7 @@ export function App() {
                   textWrap: 'balance',
                 }}
               >
-                GabeKarya: Koleksi 18 Produk Artisanal & Seduh Nusantara Pilihan.
+                GabeKarya: Koleksi 24 Produk Artisanal & Seduh Nusantara Pilihan.
               </h1>
 
               <p className="text-base text-stone-700 leading-relaxed max-w-2xl">

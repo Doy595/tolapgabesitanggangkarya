@@ -145,6 +145,9 @@ export interface DatabaseSnapshot {
   lastSyncAt: string;
   transactionCount: number;
   twoFactorEnabled: boolean;
+  firebaseConnected?: boolean;
+  firebaseProjectId?: string;
+  firestoreDatabaseId?: string;
   products: Product[];
   customers: Customer[];
   orders: Order[];

@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'doy91364@gmail.com' ||
+        request.auth.token.email == 'admin@gabekarya.id' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Products catalog: publicly readable for storefront browsing
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Orders: allow customer checkout, payment proof upload, and admin approvals
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if true;
+    }
+
+    // Customers: directory for loyalty tracking and repeat orders
+    match /customers/{customerId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // WhatsApp notifications: real-time logs of automatic WhatsApp triggers
+    match /whatsapp_notifications/{notificationId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Security & 2FA logs
+    match /security_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Connection testing
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
